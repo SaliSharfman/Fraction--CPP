@@ -48,7 +48,7 @@ ostream &ariel::operator <<(ostream &os, const Fraction &f){
 }
 
 
-istream &operator >>(istream &is,  Fraction &f) {
+istream &ariel::operator >>(istream &is,  Fraction &f) {
     int num, den;
     is >> num >> den;
     f = Fraction(num, den);
