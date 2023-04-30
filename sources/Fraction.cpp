@@ -40,7 +40,7 @@ void Fraction::reduce(){
     this->numerator*=sign;
 }
 
-ostream &ariel::operator <<(ostream &os, const Fraction &f){
+ostream &ariel::operator <<(ostream &os, const Fraction &f) {
     os << f.numerator;
     if(f.numerator!=0)
         os << '/' << f.denominator;
@@ -55,44 +55,44 @@ istream &ariel::operator >>(istream &is,  Fraction &f) {
     return is;
 }
 
-Fraction ariel:: operator+(const Fraction &f1 ,const Fraction &f2){
-    Fraction f(f1.numerator*f2.denominator + f2.numerator*f1.denominator, f1.denominator*f2.denominator);
+Fraction Fraction:: operator+(const Fraction &other) const{
+    Fraction f(this->numerator*other.denominator + other.numerator*this->denominator, this->denominator*other.denominator);
     f.reduce();
     return f;
 }
 
-Fraction ariel:: operator+(const Fraction &f1 ,const double &f2){
+Fraction Fraction:: operator+(const double &other) const{
     
-    return f1 + Fraction(f2);
+    return *this + Fraction(other);
 }
 
 
-Fraction ariel:: operator-(const Fraction &f1 ,const Fraction &f2){
+Fraction Fraction:: operator-(const Fraction &other) const{
     
-    return f1 + Fraction(-f2.numerator,f2.denominator);
+    return *this + Fraction(-other.numerator,other.denominator);
 }
 
-Fraction ariel:: operator-(const Fraction &f1 ,const double &f2){
+Fraction Fraction:: operator-(const double &other) const{ 
     
-    return f1 - Fraction(f2);
+    return *this - Fraction(other);
 }
 
-Fraction ariel:: operator/(const Fraction &f1 ,const Fraction &f2){
-    if (f2.numerator == 0){
+Fraction Fraction:: operator/(const Fraction &other) const{
+    if (other.numerator == 0){
         throw invalid_argument("devision by zero");
-        return f1;
+        return *this;
     }
-    return f1 * Fraction(f2.denominator,f2.numerator);
+    return *this * Fraction(other.denominator,other.numerator);
 }
 
-Fraction ariel:: operator*(const Fraction &f1 ,const Fraction &f2){
+Fraction Fraction:: operator*(const Fraction &other) const{
     
-    Fraction f(f1.numerator*f2.numerator,f1.denominator*f2.denominator);
+    Fraction f(this->numerator*other.numerator,this->denominator*other.denominator);
     f.reduce();
     return f;
 }
 
-Fraction ariel:: operator*(const double &f1 ,const Fraction &f2){
+Fraction ariel:: operator*(const double &f1 ,const Fraction &f2) {
     
     return Fraction(f1) * f2;
 }
@@ -102,7 +102,7 @@ Fraction Fraction::operator++(int) {
     // Make a copy of the current object
     Fraction old = *this;
     // Increment numerator
-    numerator += denominator;
+    this->numerator += this->denominator;
     // Return the old (pre-incremented) object
     this->reduce();
     return old;
@@ -111,34 +111,32 @@ Fraction Fraction::operator++(int) {
 // Prefix reduction operator
 Fraction& Fraction::operator--() {
     // Increment numerator
-    numerator -= denominator;
+    this->numerator -= this->denominator;
     this->reduce();
     // Return updated object
     return *this;
  }
 
-bool ariel:: operator == (const Fraction &f1, const string &str){
-    return((str=="0" &&f1.numerator == 0) || str== to_string(f1.numerator)+"/"+to_string(f1.denominator ));
+bool Fraction:: operator == (const string &str) const{
+    return((str=="0" &&this->numerator == 0) || str== to_string(this->numerator)+"/"+to_string(this->denominator));
 }
 
-bool ariel:: operator >= (const Fraction &f1, const double &f2){
-    if(f2==0)
-        return f1+1 >=1;
-    return f1.numerator >= f1.denominator*f2;
+bool Fraction:: operator >= (const double &other) const{ 
+    if(other==0)
+        return *this+1 >=1;
+    return this->numerator >= this->denominator*other;
 }
 
-bool ariel:: operator >= (const Fraction &f1, const Fraction &f2){
-    return f1-f2>=0;
+bool Fraction:: operator >= (const Fraction &other) const{
+    return *this-other>=0;
 }
 
-bool ariel:: operator > (const Fraction &f1 ,const double &f2){
-    if(f2==0)
-        return f1+1 >1;
-    return f1.numerator > f1.denominator*f2;
+bool Fraction:: operator > (const double &other) const{
+    if(other==0)
+        return *this+1 >1;
+    return this->numerator > this->denominator*other;
 }
 
-bool ariel:: operator > (const Fraction &f1 ,const Fraction &f2){
-    return f1-f2>0;
+bool Fraction:: operator > (const Fraction &other) const{ 
+    return *this-other>0;
 }
-
-
