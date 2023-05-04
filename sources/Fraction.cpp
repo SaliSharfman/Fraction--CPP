@@ -4,6 +4,7 @@
 using namespace std;
 using namespace ariel;
 
+//constructors
 Fraction:: Fraction(const int& numerator,const int& denominator):numerator(numerator), denominator(denominator){
     if (denominator == 0)
         throw invalid_argument("devision by zero");
@@ -17,16 +18,20 @@ Fraction:: Fraction(const double& d){
         num=num*10;
         den*=10;
     }
-    this->numerator = int(num);
+    this->numerator = round(num);
     this->denominator = den;
     this->reduce();
 }
-int Fraction:: gcd(int a,int b) const{
+
+//uclid algorithm for finding the gratest common devidor between 2 integer numbers.
+int gcd(int a,int b) {
     if (b == 0) {
         return a;
     }
     return gcd(b, a % b);
 }
+
+//reducing the frugtion
 void Fraction:: reduce(){
     if(this->numerator == 0)
         this-> denominator =1;
@@ -49,6 +54,7 @@ void Fraction:: reduce(){
     }
 }
 
+//output
 ostream &ariel::operator <<(ostream &os, const Fraction &fraction) {
     Fraction f = fraction;
     f.reduce();
@@ -61,7 +67,7 @@ ostream &ariel::operator <<(ostream &os, const Fraction &fraction) {
     return os;
 }
 
-
+//input
 istream &ariel::operator >>(istream &is,  Fraction &f){
     int num, den;
     char delimiter;
@@ -85,39 +91,48 @@ istream &ariel::operator >>(istream &is,  Fraction &f){
     return is;
 }
 
+//add
 Fraction Fraction:: operator+(const Fraction &other) const{
     int max = numeric_limits<int>::max();
     int min = numeric_limits<int>::min();
+    //overflow check
     if ((this->numerator == max ^ this->denominator == max)
         || (this->numerator <= min + 100 && other.numerator <= min + 100))
         throw overflow_error("overflow");
     return Fraction(this->numerator*other.denominator + other.numerator*this->denominator, this->denominator*other.denominator);
 }
 
-
+//sub
 Fraction Fraction:: operator-(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
     int min = std::numeric_limits<int>::min();
+    //overflow check
     if ((this-> numerator <= min + 100 && other.numerator <= min + 100)
             || (this-> numerator >= max - 100 && other.numerator <= min + 100))
         throw overflow_error("overflow");
     return *this + Fraction(-other.numerator,other.denominator);
 }
 
-
+//dev
 Fraction Fraction:: operator/(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
+    //overflow check
     if ((this-> denominator == max && this-> numerator < max - 100)
             || (this-> numerator == max && this-> denominator != max))
         throw overflow_error("overflow");
+
+    //devition by zero check
     if (other.numerator == 0)
         throw runtime_error("devision by zero");
 
     return Fraction (this->numerator*other.denominator,this->denominator*other.numerator);
 }
 
+//mul
 Fraction Fraction:: operator*(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
+
+    //overflow check
     if ((this->numerator == max ^ this->denominator == max)
             || (other.numerator == max && other.denominator != max))
         throw overflow_error("overflow");
@@ -160,13 +175,12 @@ Fraction& Fraction::operator--() {
     return *this;
  }
 
+//equals to string
 bool Fraction:: operator == (const string &str) const{
     return((str=="0" &&this-> numerator == 0) || str== to_string(this-> numerator)+"/"+to_string(this-> denominator));
 }
-bool Fraction:: operator ==(const double &other) const {
-   return *this == Fraction(other);
-   // return abs(other- (this->numerator/this->denominator) )<=0.001;
-}
+
+//equals to fraction
 bool Fraction:: operator == (const Fraction &other) const{
     Fraction tmp1 = *this;
     Fraction tmp2 = other;
@@ -175,23 +189,18 @@ bool Fraction:: operator == (const Fraction &other) const{
     return tmp1.numerator == tmp2.numerator && tmp1.denominator == tmp2.denominator;
 }
 
+//grater equals
 bool Fraction:: operator >= (const double &other) const{ 
     if(other==0)
         return *this+1 >=1;
     return this->numerator >= this->denominator*other;
 }
 
-bool Fraction:: operator >= (const Fraction &other) const{
-    return *this-other>=0;
-}
-
+//grater
 bool Fraction:: operator > (const double &other) const{
     if(other==0)
         return *this+1 >1;
     return this->numerator > this->denominator*other;
 }
 
-bool Fraction:: operator > (const Fraction &other) const{ 
-    return *this-other>0;
-}
 
