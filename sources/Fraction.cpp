@@ -95,7 +95,6 @@ istream &ariel::operator >>(istream &is,  Fraction &f){
 Fraction Fraction:: operator+(const Fraction &other) const{
     int max = numeric_limits<int>::max();
     int min = numeric_limits<int>::min();
-    //overflow check
     if ((this->numerator == max ^ this->denominator == max)
         || (this->numerator <= min + 100 && other.numerator <= min + 100))
         throw overflow_error("overflow");
@@ -106,7 +105,6 @@ Fraction Fraction:: operator+(const Fraction &other) const{
 Fraction Fraction:: operator-(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
     int min = std::numeric_limits<int>::min();
-    //overflow check
     if ((this-> numerator <= min + 100 && other.numerator <= min + 100)
             || (this-> numerator >= max - 100 && other.numerator <= min + 100))
         throw overflow_error("overflow");
@@ -116,12 +114,9 @@ Fraction Fraction:: operator-(const Fraction &other) const{
 //dev
 Fraction Fraction:: operator/(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
-    //overflow check
     if ((this-> denominator == max && this-> numerator < max - 100)
             || (this-> numerator == max && this-> denominator != max))
         throw overflow_error("overflow");
-
-    //devition by zero check
     if (other.numerator == 0)
         throw runtime_error("devision by zero");
 
@@ -131,8 +126,6 @@ Fraction Fraction:: operator/(const Fraction &other) const{
 //mul
 Fraction Fraction:: operator*(const Fraction &other) const{
     int max = std::numeric_limits<int>::max();
-
-    //overflow check
     if ((this->numerator == max ^ this->denominator == max)
             || (other.numerator == max && other.denominator != max))
         throw overflow_error("overflow");
@@ -196,7 +189,7 @@ bool Fraction:: operator >= (const double &other) const{
     return this->numerator >= this->denominator*other;
 }
 
-//grater
+//grater 
 bool Fraction:: operator > (const double &other) const{
     if(other==0)
         return *this+1 >1;
