@@ -19,7 +19,6 @@ namespace ariel
 
         //input
         friend istream &operator >>(istream &stream,  Fraction &fraction);
-        string toString() const;
 
         //getters
         int getNumerator() const {return this->numerator;};
@@ -56,8 +55,8 @@ namespace ariel
 
         //equals
         bool operator ==(const string &other) const;
-         bool operator ==(const Fraction &other) const;
-        bool operator ==(const double &other) const {return *this == Fraction(other);}
+        bool operator ==(const double &other) const{return *this == Fraction(other);}
+        bool operator ==(const Fraction &other) const;
         friend bool operator ==(const double &fraction1 ,const Fraction &fraction2) {return fraction2 == fraction1;}
 
         //not equals
@@ -67,7 +66,7 @@ namespace ariel
 
         //greater equals
         bool operator >=(const double &other) const;
-        bool operator >=(const Fraction &other) {return *this-other>=0;}
+        bool operator >=(const Fraction &other) const{return *this-other>=0;}
         friend bool operator >=(const double &fraction1 ,const Fraction &fraction2) {return !(fraction2>fraction1);}
 
         //smaller equals
@@ -76,10 +75,10 @@ namespace ariel
 
         //greater
         bool operator >(const double &other) const;
-        bool operator >(const Fraction &other) {return *this-other>0;}
+        bool operator >(const Fraction &other) const {return *this-other>0;}
         friend bool operator >(const double &fraction1 ,const Fraction &fraction2) {return !(fraction2>=fraction1);}
 
-        
+        //smaller
         bool operator <(const double &other) const {return other > *this;}
         bool operator <(const Fraction &other) const {return other > *this;}
         friend bool operator <(const double &fraction1 ,const Fraction &fraction2) {return fraction2>fraction1;}
